@@ -1,12 +1,9 @@
-# Bikeshare
-# Bikeshare project from Udacity Datascience project
-
-## TODO: import all necessary packages and functions
 import time
 import pandas
 import datetime
 import calendar
-## Filenames
+
+
 chicago = 'chicago.csv'
 new_york_city = 'new_york_city.csv'
 washington = 'washington.csv'
@@ -14,12 +11,12 @@ washington = 'washington.csv'
 
 def get_city():
     '''Asks the user for a city and returns the filename for that city's bike share data.
-
     Args:
         none.
     Returns:
         (str) Filename for a city's bikeshare data.
     '''
+    
     city = input('\nHello! Let\'s explore some US bikeshare data!\n'
                  'Would you like to see data for Chicago, New York, or Washington?\n').lower()
     if city == "chicago":
@@ -30,63 +27,64 @@ def get_city():
         return washington
     else:
         print("invalid location")
+        get_city()
 
 def get_time_period():
     '''Asks the user for a time period and returns the specified filter.
-
     Args:
         none.
     Returns:
         (str) The filter time period requirements
     '''
+    
     time_period = input('\nWould you like to filter the data by month, day, or not at'
                         ' all? Type "none" for no time filter.\n')
     return time_period.lower()
 
 def get_month():
     '''Asks the user for a month and returns the specified month.
-
     Args:
         none.
     Returns:
         (str) The month the user is interested in
     '''
     
-    month = input('\nWhich month? January, February, March, April, May, or June?\nPlease type your response as an integer.\n')
+    month = input('\nWhich month? January, February, March, April, May, or June?'
+                  '\nPlease type your response as an integer.\n')
     return int(month)
 
 def get_day(month):
     '''Asks the user for a day and returns the specified day.
-
     Args:
         none.
     Returns:
         (int) The day the user is interested in
     '''
+    
     day = input('\nWhich day? Please type your response as an integer.\n')
     return int(day)
 
 def find_highest_index(array):
-    '''Finds the index of the highest number in an array
-    
+    '''Finds the index of the highest number in an array    
     Args:
         array to be searched
     Returns:
         (int) the index of the highest number
     '''
+    
     max_val = max(array)
     max_idx = array.index(max_val)
     return max_idx
 
 def filter_dataset(city_data, filter_array):
-    '''Filters the city file based on the time filter input by user
-    
+    '''Filters the city file based on the time filter input by user    
     Args:
         (dataframe) the data extracted from the city_file
         (array) the filter requirements input by user
     Return:
         (dataframe) the filtered data
     '''
+    
     df = city_data
     if filter_array[2]:
         filter_from = datetime.datetime(2017,filter_array[1], filter_array[2])
@@ -100,12 +98,13 @@ def filter_dataset(city_data, filter_array):
     return filtered
     
 def popular_month(city_data):
-    '''DESCRIPTION
+    '''Calculates the month popular month for bikeshare usage
     Args: 
         (dataframe) The data table for the city of interest
     Returns:
         (str) The name of the most popular month
     '''
+    
     start_times = city_data.xs('Start Time', axis = 1)
     months = [0]*12
 
@@ -120,6 +119,7 @@ def popular_day(city_data):
     Returns:
         (str) The name of the most popular day
     '''
+    
     start_times = city_data.xs('Start Time', axis = 1)   
     day_of_week = [0]*7
     for i in start_times:
@@ -135,6 +135,7 @@ def popular_hour(city_data):
     Returns:
         (str) The hour (in 24 hour format) of the most popular start time
     '''
+    
     start_times = city_data.xs('Start Time', axis = 1)
     hours = [0]*25
     for dates in start_times:
@@ -148,6 +149,7 @@ def trip_duration(city_data):
     Returns:
         (array) An array containing time delta of totaltime and average time
     '''
+    
     durations = []
     total = city_data['Trip Duration'].sum()
     durations.append(timedelta(minutes = total))
@@ -162,6 +164,7 @@ def popular_stations(city_data):
         (Array) An array where index 0 is most popular start station
         and index 1 is most popular end station
     '''
+    
     return_array = []
     start_dict = {}
     end_dict = {}
@@ -192,6 +195,7 @@ def popular_trip(city_data):
     Returns:
         (str) The most popular trip including 'to' between stations
     '''
+    
     start_stations = city_data.xs("Start Station", axis = 1)
     end_stations = city_data.xs("End Station", axis = 1)
     trips = start_stations + " to " + end_stations
@@ -213,6 +217,7 @@ def users(city_data):
     Returns:
         (dictionary) dictionary where key is user type, value is number
     '''
+    
     user_dict = {"Subscriber": 0, "Customer": 0}
     users = city_data.xs("User Type", axis = 1)
     for user in users:
@@ -229,6 +234,7 @@ def gender(city_data):
     Returns:
         (array) array[0] = male counts, array[1] = female count
     '''
+    
     return_array = [0]*2
     genders = city_data.xs("Gender", axis = 1)
     for gender in genders:
@@ -246,6 +252,7 @@ def birth_years(city_data):
         (array) index 0= most popular birth year, index 1= birth year of oldest user
         index 2= birth year of youngest user
     '''
+    
     return_array = []
     year_dict = {}
     years = city_data.xs("Birth Year", axis = 1).dropna()
@@ -262,6 +269,7 @@ def birth_years(city_data):
     return_array.append(sorted_years[0])  #birth year of oldest user
     return_array.append(sorted_years[-1]) #birth year of youngest user
     return return_array
+
 def display_data(city_data):
     '''Displays five lines of data if the user specifies that they would like to.
     After displaying five lines, ask the user if they would like to see five more,
@@ -272,6 +280,7 @@ def display_data(city_data):
     Returns:
         none.
     '''
+    
     display = input('\nWould you like to view individual trip data?'
                     'Type \'yes\' or \'no\'.\n')
     i = 0
@@ -289,6 +298,7 @@ def statistics():
     Returns:
         none.
     '''
+    
     city_file = get_city()
     city_file
     time_period = get_time_period()
